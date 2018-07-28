@@ -13,7 +13,7 @@ const env = process.env;
 const
     NODE_ENV = env.NODE_ENV || 'development',
     PRODUCTION = NODE_ENV === 'production',
-    LISTEN_HOST = env.LISTEN_HOST || '0.0.0.0',
+    LISTEN_HOST = env.LISTEN_HOST || 'localhost',
     LISTEN_PORT = env.LISTEN_PORT || 8085,
     GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc';
 
