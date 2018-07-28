@@ -30,7 +30,9 @@ export default props => {
             </p>
             <p className="watch-title">{title}</p>
             <p className="watch-upload">
-                <span>{channelTitle && 'Uploaded by'}</span> <a href={channelUrl} target="_blank">{channelTitle}</a> <TimeAgo date={publishedAt}/>
+                <span>{channelTitle && 'Uploaded by'}</span>&nbsp;
+                <a href={channelUrl} target="_blank">{channelTitle}</a>&nbsp;
+                {publishedAt && <TimeAgo date={publishedAt}/>}
             </p>
             <p className="watch-description">
                 {description}

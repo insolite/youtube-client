@@ -8,7 +8,7 @@ export default props => {
     return (
         <div className={cx(className, 'header')} {...restProps}>
             <div className="header-content">
-                <Link to="/">
+                <Link to="/?query=">
                     <img className="logo" align="center" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"/>
                 </Link>
                 {children}

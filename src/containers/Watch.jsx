@@ -27,24 +27,28 @@ export default connect(
         };
 
         componentWillMount() {
-            this.setState({videoId: this.parseId(this.props.location)}, this.refreshDetails);
+            const videoId = this.parseId(this.props.location);
+            this.setState({videoId});
+            this.refreshDetails(videoId);
         }
 
         componentWillReceiveProps(np) {
             if (np.location.search !== this.props.location.search) {
-                this.setState({videoId: this.parseId(np.location)});
+                const videoId = this.parseId(np.location);
+                this.setState({videoId});
+                this.refreshDetails(videoId);
             }
         }
 
         parseId = location => (new URLSearchParams(location.search)).get('id') || '';
 
-        refreshDetails = () => {
+        refreshDetails = (videoId) => {
             this.props.gapiRequest().then(gapi => {
                 gapi.client.youtube.videos.list({
-                    id: this.state.videoId,
+                    id: videoId,
                     part: 'snippet',
                 }).execute(response => {
-                    const {
+                    const [{
                         snippet: {
                             title,
                             description,
@@ -53,8 +57,7 @@ export default connect(
                             channelTitle,
                             publishedAt,
                         },
-                        id: {videoId}
-                    } = response.items[0];
+                    }] = response.items;
                     this.setState({
                         title,
                         description,
