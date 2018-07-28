@@ -18,8 +18,9 @@ export default connect(
 )(
     class extends Component {
         state = {
-            videos: null,
+            videos: [],
             pageToken: undefined,
+            loading: true,
         };
 
         componentWillMount() {
@@ -35,51 +36,58 @@ export default connect(
         parseQuery = location => (new URLSearchParams(location.search)).get('query') || '';
 
         search = (query, append=false) => {
-            this.props.gapiRequest().then(gapi => {
-                gapi.client.youtube.search.list({
-                    part: 'snippet',
-                    type: 'video',
-                    pageToken: this.state.nextPageToken,
-                    maxResults: 10,
-                    q: query,
-                }).execute(response => {
-                    const {nextPageToken} = response;
-                    const videos = response.items.map(({
-                        snippet: {
+            this.setState({loading: true}, () => {
+                this.props.gapiRequest().then(gapi => {
+                    gapi.client.youtube.search.list({
+                        part: 'snippet',
+                        type: 'video',
+                        pageToken: this.state.nextPageToken,
+                        maxResults: 10,
+                        q: query,
+                    }).execute(response => {
+                        const {nextPageToken} = response;
+                        const videos = response.items.map(({
+                            snippet: {
+                                title,
+                                thumbnails: {
+                                    default: thumbnail
+                                }
+                            },
+                            id: {videoId}
+                        }) => ({
                             title,
-                            thumbnails: {
-                                default: thumbnail
-                            }
-                        },
-                        id: {videoId}
-                    }) => ({
-                        title,
-                        thumbnail,
-                        videoId
-                    }));
-                    this.setState({
-                        videos: append ? this.state.videos.concat(videos) : videos,
-                        nextPageToken,
+                            thumbnail,
+                            videoId
+                        }));
+                        this.setState((prevState) => ({
+                            videos: append ? prevState.videos.concat(videos) : videos,
+                            nextPageToken,
+                            loading: false,
+                        }));
                     });
                 });
             });
         };
 
         render() {
-            const {videos} = this.state;
+            const {videos, loading} = this.state;
             return (
                 <List>
-                    {videos ? videos.map(({videoId, title, thumbnail}) => (
+                    {videos.map(({videoId, title, thumbnail}) => (
                         <Link to={`/watch?id=${videoId}`} key={videoId}>
                             <VideoThumbnail title={title}
                                             videoId={videoId}
                                             imageUrl={thumbnail.url}
                             />
                         </Link>
-                    )) : 'Loading...'}
-                    <button className="load"
-                            onClick={() => this.search(this.parseQuery(this.props.location), true)}
-                    >Load more</button>
+                    ))}
+                    {loading ? (
+                        <div className="loading">Loading...</div>
+                    ) : (
+                        <button className="load"
+                                onClick={() => !this.state.loading && this.search(this.parseQuery(this.props.location), true)}
+                        >Load more</button>
+                    )}
                 </List>
             );
         }
