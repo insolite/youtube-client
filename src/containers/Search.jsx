@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 
 import {Search} from '../components';
-import history from '../history';
 
 
 export default class extends Component {

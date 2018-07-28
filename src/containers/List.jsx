@@ -22,14 +22,7 @@ export default connect(
         };
 
         componentWillMount() {
-            const query = this.parseQuery(this.props.location);
-            if (query) {
-                this.search(query);
-            } else {
-                this.setState({
-                    videos: [],
-                });
-            }
+            this.search(this.parseQuery(this.props.location));
         }
 
         componentWillReceiveProps(np) {

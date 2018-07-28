@@ -13,16 +13,26 @@ body {
   height: 64px;
   position: fixed;
   top: 0;
+  min-width: 320px;
+  .header-content {
+    margin: 0 auto 0 auto;
+    max-width: $page-width;
+  }
+}
+
+.logo {
+  width: 84px;
 }
 
 .search {
   padding-top: 8px;
-  margin: 0 auto 0 auto;
-  max-width: $page-width;
+  display: inline-block;
+  width: calc(100% - 100px);
+  margin-left: 16px;
   input {
     border: none;
-    width: calc(100% - 78px);
-    padding: 0 0 0 8px;
+    width: calc(100% - 86px);
+    padding: 0 8px 0 8px;
   }
   button {
     width: 70px;
@@ -35,7 +45,8 @@ body {
 }
 
 .content {
-  width: $page-width;
+  max-width: $page-width;
+  min-width: 320px;
   margin: 72px auto 0 auto;
 }
 
@@ -57,5 +68,23 @@ body {
     margin: 10px 0 0 10px;
     color: #000;
     width: calc(100% - 220px);
+    overflow: hidden;
+    max-height: 100%;
+    text-overflow: ellipsis;
+  }
+}
+
+.player {
+  max-width: $page-width;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 }

@@ -7,7 +7,7 @@ export default props => {
     return (
         <div className={cx(className, 'thumbnail')} {...restProps}>
             <img src={imageUrl} align="top"/>
-            <div className="thumbnail-title">{title}</div>
+            <div className="thumbnail-title" title={title}>{title}</div>
         </div>
     );
 };
