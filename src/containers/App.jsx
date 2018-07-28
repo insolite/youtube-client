@@ -1,44 +1,66 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Route, Switch} from 'react-router';
-import {BrowserRouter} from 'react-router-dom';
+import {BrowserRouter, Router} from 'react-router-dom';
 
-import {App, Header} from '../components';
+import {gapiInit} from '../actions';
+import {App, Header, Content} from '../components';
 import {List, Watch, Search} from '../containers';
 
 
-export default class extends Component {
-    listComponent = (props) => {
-        return (
-            <List/>
-        );
-    };
+export default connect(
+    state => {
+        return {};
+    },
+    dispatch => {
+        return {
+            gapiInit: () => dispatch(gapiInit()),
+        };
+    },
+)(
+    class extends Component {
+        componentWillMount() {
+            this.props.gapiInit();
+        }
 
-    watchComponent = (props) => {
-        return (
-            <Watch/>
-        );
-    };
+        listComponent = (props) => {
+            return (
+                <List {...props}/>
+            );
+        };
 
-    render() {
-        return (
-            <BrowserRouter>
-                <App>
-                    <Header>
-                        <Search/>
-                    </Header>
-                    <Switch>
-                        <Route
-                            exact
-                            path="/(list)?"
-                            component={this.listComponent}
-                        />
-                        <Route
-                            path="/watch"
-                            component={this.watchComponent}
-                        />
-                    </Switch>
-                </App>
-            </BrowserRouter>
-        );
+        watchComponent = (props) => {
+            return (
+                <Watch {...props}/>
+            );
+        };
+
+        render() {
+            return (
+                <BrowserRouter>
+                    <App>
+                        <Header>
+                            <Route
+                                path="/"
+                                component={Search}
+                            />
+                        </Header>
+                        <Content>
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/(list)?"
+                                    component={this.listComponent}
+                                />
+                                <Route
+                                    path="/watch"
+                                    component={this.watchComponent}
+                                />
+                            </Switch>
+                        </Content>
+                    </App>
+                </BrowserRouter>
+            );
+        }
     }
-};
+);

@@ -9,10 +9,13 @@ if (!global.Promise) {
     global.Promise = require('es6-promise').Promise;
 }
 
-const NODE_ENV = process.env.NODE_ENV || 'development',
+const env = process.env;
+const
+    NODE_ENV = env.NODE_ENV || 'development',
     PRODUCTION = NODE_ENV === 'production',
-    LISTEN_HOST = '0.0.0.0',
-    LISTEN_PORT = 8085;
+    LISTEN_HOST = env.LISTEN_HOST || '0.0.0.0',
+    LISTEN_PORT = env.LISTEN_PORT || 8085,
+    GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc';
 
 const extractTextPlugin = new ExtractTextPlugin({
     filename: 'resources/style.css',
@@ -137,6 +140,9 @@ module.exports = {
             minify: PRODUCTION,
             hash: true,
             // favicon: './src/layout/images/favicon.png',
+        }),
+        new webpack.DefinePlugin({
+            __GAPI_KEY: JSON.stringify(GAPI_KEY),
         })
     ],
     resolve: {

@@ -1,3 +1,61 @@
+$page-width: 640px;
+
 body {
   margin: 0;
+}
+
+.app {
+}
+
+.header {
+  background: #eeeeee;
+  width: 100%;
+  height: 64px;
+  position: fixed;
+  top: 0;
+}
+
+.search {
+  padding-top: 8px;
+  margin: 0 auto 0 auto;
+  max-width: $page-width;
+  input {
+    border: none;
+    width: calc(100% - 78px);
+    padding: 0 0 0 8px;
+  }
+  button {
+    width: 70px;
+    padding: 0;
+  }
+  input, button {
+    height: 48px;
+    display: inline-block;
+  }
+}
+
+.content {
+  width: $page-width;
+  margin: 72px auto 0 auto;
+}
+
+.list {
+}
+
+.thumbnail {
+  height: 128px;
+  &:hover {
+    background: #fafafa;
+  }
+  img {
+    margin: 8px 0 0 8px;
+    height: calc(100% - 16px);
+    //display: inline-block;
+  }
+  .thumbnail-title {
+    display: inline-block;
+    margin: 10px 0 0 10px;
+    color: #000;
+    width: calc(100% - 220px);
+  }
 }

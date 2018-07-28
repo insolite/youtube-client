@@ -1,12 +1,13 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import cx from 'classnames';
 
 
 export default props => {
-    const {className} = props;
+    const {className, title, imageUrl, videoId, ...restProps} = props;
     return (
-        <div className={cx(className, 'thumbnail')}>
-            thumbnail
+        <div className={cx(className, 'thumbnail')} {...restProps}>
+            <img src={imageUrl} align="top"/>
+            <div className="thumbnail-title">{title}</div>
         </div>
     );
 };
