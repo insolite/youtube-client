@@ -74,6 +74,28 @@ body {
   }
 }
 
+.watch {
+  .watch-tags {
+    font-size: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .watch-title {
+  }
+  .watch-upload {
+    font-size: 14px;
+    span {
+    }
+    time {
+      font-style: italic;
+    }
+  }
+  .watch-description {
+    font-size: 12px;
+  }
+}
+
 .player {
   max-width: $page-width;
   position: relative;

@@ -1,29 +1,92 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import {Watch} from '../components';
+import {gapiRequest} from '../actions';
 
 
-export default class extends Component {
-    state = {
-        videoId: null,
-    };
+export default connect(
+    state => {
+        return {};
+    },
+    dispatch => {
+        return {
+            gapiRequest: () => dispatch(gapiRequest()),
+        };
+    },
+)(
+    class extends Component {
+        state = {
+            videoId: null,
+            title: null,
+            description: null,
+            tags: null,
+            channelId: null,
+            channelTitle: null,
+            publishedAt: null,
+        };
 
-    componentWillMount() {
-        this.setState({videoId: this.parseId(this.props.location)});
-    }
+        componentWillMount() {
+            this.setState({videoId: this.parseId(this.props.location)}, this.refreshDetails);
+        }
 
-    componentWillReceiveProps(np) {
-        if (np.location.search !== this.props.location.search) {
-            this.setState({videoId: this.parseId(np.location)});
+        componentWillReceiveProps(np) {
+            if (np.location.search !== this.props.location.search) {
+                this.setState({videoId: this.parseId(np.location)});
+            }
+        }
+
+        parseId = location => (new URLSearchParams(location.search)).get('id') || '';
+
+        refreshDetails = () => {
+            this.props.gapiRequest().then(gapi => {
+                gapi.client.youtube.videos.list({
+                    id: this.state.videoId,
+                    part: 'snippet',
+                }).execute(response => {
+                    const {
+                        snippet: {
+                            title,
+                            description,
+                            tags,
+                            channelId,
+                            channelTitle,
+                            publishedAt,
+                        },
+                        id: {videoId}
+                    } = response.items[0];
+                    this.setState({
+                        title,
+                        description,
+                        tags,
+                        channelId,
+                        channelTitle,
+                        publishedAt,
+                    });
+                });
+            });
+        };
+
+        render() {
+            const {
+                videoId,
+                title,
+                description,
+                tags,
+                channelId,
+                channelTitle,
+                publishedAt,
+            } = this.state;
+            return (
+                <Watch url={`https://www.youtube.com/embed/${videoId}?autoplay=1&widgetid=1&enablejsapi=1`}
+                       title={title}
+                       description={description}
+                       tags={tags}
+                       channelTitle={channelTitle}
+                       channelUrl={`https://www.youtube.com/channel/${channelId}`}
+                       publishedAt={publishedAt}
+                />
+            );
         }
     }
-
-    parseId = location => (new URLSearchParams(location.search)).get('id') || '';
-
-    render() {
-        const {videoId} = this.state;
-        return (
-            <Watch url={`https://www.youtube.com/embed/${videoId}?autoplay=1&widgetid=1&enablejsapi=1`}/>
-        );
-    }
-};
+);
