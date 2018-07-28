@@ -1,7 +1,7 @@
 $page-width: 640px;
 
 body {
-  margin: 0;
+  margin: 0 0 16px 0;
 }
 
 .app {
@@ -53,6 +53,12 @@ body {
 }
 
 .list {
+  .load {
+    width: 100%;
+    text-align: center;
+    height: 40px;
+    margin-top: 10px;
+  }
 }
 
 .thumbnail {

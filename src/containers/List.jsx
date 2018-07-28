@@ -19,6 +19,7 @@ export default connect(
     class extends Component {
         state = {
             videos: null,
+            pageToken: undefined,
         };
 
         componentWillMount() {
@@ -33,13 +34,16 @@ export default connect(
 
         parseQuery = location => (new URLSearchParams(location.search)).get('query') || '';
 
-        search = (query) => {
+        search = (query, append=false) => {
             this.props.gapiRequest().then(gapi => {
                 gapi.client.youtube.search.list({
                     part: 'snippet',
                     type: 'video',
+                    pageToken: this.state.nextPageToken,
+                    maxResults: 10,
                     q: query,
                 }).execute(response => {
+                    const {nextPageToken} = response;
                     const videos = response.items.map(({
                         snippet: {
                             title,
@@ -53,7 +57,10 @@ export default connect(
                         thumbnail,
                         videoId
                     }));
-                    this.setState({videos});
+                    this.setState({
+                        videos: append ? this.state.videos.concat(videos) : videos,
+                        nextPageToken,
+                    });
                 });
             });
         };
@@ -70,6 +77,9 @@ export default connect(
                             />
                         </Link>
                     )) : 'Loading...'}
+                    <button className="load"
+                            onClick={() => this.search(this.parseQuery(this.props.location), true)}
+                    >Load more</button>
                 </List>
             );
         }
