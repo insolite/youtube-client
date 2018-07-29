@@ -117,20 +117,17 @@ export default connect(
                 if (inFavorite) {
                     gapi.client.youtube.playlistItems.delete({
                         id: favoritePlaylistItem,
-                    }, {
-                        snippet: {
-                            playlistId: favoritePlaylist,
-                            resourceId: {
-                                kind: 'youtube#video',
-                                videoId,
-                            }
+                    }).execute((response) => {
+                        let newState = {favoriteLoading: false};
+                        if (response.error) {
+                            console.error('Favorite delete error', response.error);
+                        } else {
+                            newState = {
+                                ...newState,
+                                inFavorite: false,
+                            };
                         }
-                    }).execute(response => {
-                        // TODO: handle errors
-                        this.setState({
-                            favoriteLoading: false,
-                            inFavorite: false,
-                        });
+                        this.setState(newState);
                     });
                 } else {
                     gapi.client.youtube.playlistItems.insert({
@@ -144,12 +141,17 @@ export default connect(
                             }
                         }
                     }).execute(response => {
-                        // TODO: handle errors
-                        this.setState({
-                            favoriteLoading: false,
-                            inFavorite: true,
-                            favoritePlaylistItem: response.result.id,
-                        });
+                        let newState = {favoriteLoading: false};
+                        if (response.error) {
+                            console.error('Favorite add error', response.error);
+                        } else {
+                            newState = {
+                                ...newState,
+                                inFavorite: true,
+                                favoritePlaylistItem: response.result.id,
+                            };
+                        }
+                        this.setState(newState);
                     });
                 }
             });

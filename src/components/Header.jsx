@@ -10,7 +10,7 @@ export default props => {
     return (
         <div className={cx(className, 'header')} {...restProps}>
             <div className="header-content">
-                <Link to="/?query=">
+                <Link to="/?">
                     <svg align="center" className="logo">
                         <use xlinkHref={`#${logo.id}`}/>
                     </svg>

@@ -34,16 +34,20 @@ export default connect(
                     part: 'contentDetails',
                     mine: true,
                 }).execute(response => {
-                    const {
-                        items: [{
-                            contentDetails: {
-                                relatedPlaylists: {
-                                    favorites: favoritePlaylist
+                    if (response.error) {
+                        console.error('Favorite playlist fetch error', response.error);
+                    } else {
+                        const {
+                            items: [{
+                                contentDetails: {
+                                    relatedPlaylists: {
+                                        favorites: favoritePlaylist
+                                    }
                                 }
-                            }
-                        }]
-                    } = response;
-                    this.props.updateFavoritePlaylist(favoritePlaylist);
+                            }]
+                        } = response;
+                        this.props.updateFavoritePlaylist(favoritePlaylist);
+                    }
                 });
             });
         };
