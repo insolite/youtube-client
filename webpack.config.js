@@ -14,7 +14,7 @@ const
     PRODUCTION = env.TARGET === 'production',
     LISTEN_HOST = env.LISTEN_HOST || 'localhost',
     LISTEN_PORT = env.LISTEN_PORT || 8085,
-    PREFIX = env.PREFIX || '',
+    URL_PREFIX = env.URL_PREFIX || '',
     GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc';
 
 const extractTextPlugin = new ExtractTextPlugin({
@@ -28,7 +28,7 @@ module.exports = {
         './src/layout/scss/index.scss'
     ],
     output: {
-        publicPath: PREFIX + '/',
+        publicPath: URL_PREFIX + '/',
         path: __dirname + '/dist',
         filename: 'bundle.js'
     },
@@ -143,6 +143,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             __GAPI_KEY: JSON.stringify(GAPI_KEY),
+            __URL_PREFIX: JSON.stringify(URL_PREFIX),
         })
     ],
     resolve: {
@@ -161,7 +162,7 @@ module.exports = {
             index: '/',
         },
         proxy: {
-            [PREFIX + '/resources']: { // Because seems like historyApiFallback can't rewrite static URLs
+            [URL_PREFIX + '/resources']: { // Because seems like historyApiFallback can't rewrite static URLs
                 target: 'http://' + LISTEN_HOST + ':' + String(LISTEN_PORT),
                 pathRewrite: {'^/': '/'},
             }

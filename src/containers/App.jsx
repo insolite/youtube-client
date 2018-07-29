@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Route, Switch} from 'react-router';
-import {BrowserRouter, Router} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Router} from 'react-router-dom';
 
+import {URL_PREFIX} from '../constants';
 import {gapiInit, gapiRequest, updateFavoritePlaylist} from '../actions';
 import {App, Header, Content} from '../components';
 import {List, Watch, Search} from '../containers';
 
+
+const routerComponent = URL_PREFIX ? HashRouter : BrowserRouter; // For github pages
 
 export default connect(
     state => {
@@ -54,7 +57,7 @@ export default connect(
 
         render() {
             return (
-                <BrowserRouter>
+                React.createElement(routerComponent, {basename: URL_PREFIX},
                     <App>
                         <Header>
                             <Route
@@ -76,7 +79,7 @@ export default connect(
                             </Switch>
                         </Content>
                     </App>
-                </BrowserRouter>
+                )
             );
         }
     }

@@ -29,7 +29,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "TARGET=production webpack",
-    "github-pages": "TARGET=production PREFIX=/youtube-client/dist webpack"
+    "github-pages": "TARGET=production URL_PREFIX=/youtube-client/dist webpack"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
