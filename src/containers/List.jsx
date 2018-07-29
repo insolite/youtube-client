@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 import {List, VideoThumbnail} from '../components';
-import {gapiRequest/*, updateSearchQuery*/} from '../actions';
+import {gapiRequest, updateSearchQuery} from '../actions';
 
 
 export default connect(
@@ -15,7 +15,7 @@ export default connect(
     dispatch => {
         return {
             gapiRequest: (auth) => dispatch(gapiRequest(auth)),
-            // updateSearchQuery: (query) => dispatch(updateSearchQuery(query)),
+            updateSearchQuery: (query) => dispatch(updateSearchQuery(query)),
         };
     },
 )(
@@ -27,8 +27,9 @@ export default connect(
         };
 
         componentWillMount() {
-            this.search(this.props.searchQuery);
-            // this.props.updateSearchQuery((new URLSearchParams(this.props.location.search)).get('query') || '');
+            const {searchQuery, updateSearchQuery, location} = this.props;
+            this.search(searchQuery);
+            updateSearchQuery((new URLSearchParams(location.search)).get('query') || '');
         }
 
         componentWillReceiveProps(np) {
