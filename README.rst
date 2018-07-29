@@ -4,6 +4,8 @@ YouTube client
 
 Simple YouTube web client using ReactJS
 
+`Demo <https://insolite.github.io/youtube-client/dist/>`_
+
 Setup development environment
 =============================
 
