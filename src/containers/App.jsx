@@ -3,36 +3,49 @@ import {connect} from 'react-redux';
 import {Route, Switch} from 'react-router';
 import {BrowserRouter, Router} from 'react-router-dom';
 
-import {gapiInit} from '../actions';
+import {gapiInit, gapiRequest, updateFavoritePlaylist} from '../actions';
 import {App, Header, Content} from '../components';
 import {List, Watch, Search} from '../containers';
 
 
 export default connect(
     state => {
-        return {};
+        return {
+            favoritePlaylist: state.favoritePlaylist,
+        };
     },
     dispatch => {
         return {
             gapiInit: () => dispatch(gapiInit()),
+            gapiRequest: (auth) => dispatch(gapiRequest(auth)),
+            updateFavoritePlaylist: playlistId => dispatch(updateFavoritePlaylist(playlistId)),
         };
     },
 )(
     class extends Component {
         componentWillMount() {
             this.props.gapiInit();
+            this.refreshFavoritePlaylist();
         }
 
-        listComponent = (props) => {
-            return (
-                <List {...props}/>
-            );
-        };
-
-        watchComponent = (props) => {
-            return (
-                <Watch {...props}/>
-            );
+        refreshFavoritePlaylist = () => {
+            this.props.gapiRequest(true).then(gapi => {
+                gapi.client.youtube.channels.list({
+                    part: 'contentDetails',
+                    mine: true,
+                }).execute(response => {
+                    const {
+                        items: [{
+                            contentDetails: {
+                                relatedPlaylists: {
+                                    favorites: favoritePlaylist
+                                }
+                            }
+                        }]
+                    } = response;
+                    this.props.updateFavoritePlaylist(favoritePlaylist);
+                });
+            });
         };
 
         render() {
@@ -50,11 +63,11 @@ export default connect(
                                 <Route
                                     exact
                                     path="/(list)?"
-                                    component={this.listComponent}
+                                    component={List}
                                 />
                                 <Route
                                     path="/watch"
-                                    component={this.watchComponent}
+                                    component={Watch}
                                 />
                             </Switch>
                         </Content>

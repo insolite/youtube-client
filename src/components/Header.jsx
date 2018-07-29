@@ -2,6 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import cx from 'classnames';
 
+import logo from '../layout/images/logo.svg';
+
 
 export default props => {
     const {children, className, ...restProps} = props;
@@ -9,7 +11,9 @@ export default props => {
         <div className={cx(className, 'header')} {...restProps}>
             <div className="header-content">
                 <Link to="/?query=">
-                    <img className="logo" align="center" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"/>
+                    <svg align="center" className="logo">
+                        <use xlinkHref={`#${logo.id}`}/>
+                    </svg>
                 </Link>
                 {children}
             </div>

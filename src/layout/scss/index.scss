@@ -4,6 +4,19 @@ body {
   margin: 0 0 16px 0;
 }
 
+button {
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #aaa;
+  outline: none;
+  &:hover {
+    background: #fafafa;
+  }
+  &:active {
+    background: #f0f0f0;
+  }
+}
+
 .app {
 }
 
@@ -23,6 +36,10 @@ body {
 
 .logo {
   width: 84px;
+  height: 34px;
+  padding-top: -1px;
+  position: relative;
+  top: 13px;
 }
 
 .search {
@@ -90,6 +107,7 @@ body {
     white-space: nowrap;
   }
   .watch-title {
+    word-break: break-word;
   }
   .watch-upload {
     font-size: 14px;
@@ -101,6 +119,17 @@ body {
   }
   .watch-description {
     font-size: 12px;
+    word-break: break-word;
+  }
+  .watch-favorite {
+    float: right;
+    padding: 4px 16px;
+    &.watch-favorite-on {
+      background: #e0e0ff;
+    }
+    &.watch-favorite-loading {
+      background: #e0e0ff;
+    }
   }
 }
 

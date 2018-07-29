@@ -5,8 +5,11 @@ export const gapiInit = () => ({
     type: GAPI_INIT,
 });
 
-export const gapiRequest = () => ({
+export const gapiRequest = (auth=false) => ({
     type: GAPI_REQUEST,
+    payload: {
+        auth,
+    }
 });
 
 export const ACTIONS = {

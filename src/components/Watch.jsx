@@ -1,6 +1,11 @@
 import React from 'react';
+import cx from 'classnames';
 import {Link} from 'react-router-dom';
 import TimeAgo from 'react-timeago';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSpinner} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
+import {faHeart as faHeartRegular} from '@fortawesome/free-regular-svg-icons';
 
 
 export default props => {
@@ -12,6 +17,9 @@ export default props => {
         channelUrl,
         channelTitle,
         publishedAt,
+        toggleFavorite,
+        inFavorite,
+        favoriteLoading,
         ...restProps,
     } = props;
     const tagsString = tags ? tags.map(tag => `#${tag}`).join(', ') : '';
@@ -33,6 +41,14 @@ export default props => {
                 <span>{channelTitle && 'Uploaded by'}</span>&nbsp;
                 <a href={channelUrl} target="_blank">{channelTitle}</a>&nbsp;
                 {publishedAt && <TimeAgo date={publishedAt}/>}
+                <button className={cx("watch-favorite", {'watch-favorite-on': inFavorite})}
+                        onClick={toggleFavorite}
+                >
+                    <FontAwesomeIcon spin={favoriteLoading}
+                                     icon={favoriteLoading ? faSpinner : (inFavorite ? faHeartSolid : faHeartRegular)}
+                    />
+                    &nbsp;{inFavorite ? 'Remove from favorite' : 'Add to favorite'}
+                </button>
             </p>
             <p className="watch-description">
                 {description}

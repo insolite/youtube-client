@@ -20,6 +20,12 @@ export const isGapiAction = (action) => {
 export const createGapiMiddleware = (GAPI_KEY) => {
     return (store) => {
         const initDeferred = new Deferred();
+        const authDeferred = new Deferred();
+        function updateSigninStatus(isSignedIn) {
+            if (isSignedIn) {
+                authDeferred.resolve(gapi);
+            }
+        }
         return (next) => {
             return (action) => {
                 if (!isGapiAction(action)) {
@@ -32,15 +38,24 @@ export const createGapiMiddleware = (GAPI_KEY) => {
                 if (actionType == ACTIONS.GAPI_INIT) {
                     loadDeferred.promise.then(() => {
                         gapi.client.load('youtube', 'v3', () => {
-                            gapi.client.setApiKey(GAPI_KEY);
-                            initDeferred.resolve(gapi);
+                            gapi.client.init({
+                                apiKey: GAPI_KEY,
+                                discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"],
+                                clientId: '364337261475-j9p4ej5pssan9p3khmn61t6c1niqmfl9.apps.googleusercontent.com',
+                                scope: 'https://www.googleapis.com/auth/youtube',
+                            }).then(function () {
+                                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+                                initDeferred.resolve(gapi);
+                            });
                         });
                     });
                     result = initDeferred.promise;
                 } else if (actionType == ACTIONS.GAPI_REQUEST) {
-                    // const callback = actionPayload;
-                    // result = callback(gapi);
                     result = initDeferred.promise;
+                    if (actionPayload.auth) {
+                        result = result.then(() => authDeferred.promise);
+                    }
                 }
 
                 let actionResult = next(action);

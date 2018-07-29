@@ -12,7 +12,7 @@ export default connect(
     },
     dispatch => {
         return {
-            gapiRequest: () => dispatch(gapiRequest()),
+            gapiRequest: (auth) => dispatch(gapiRequest(auth)),
         };
     },
 )(
