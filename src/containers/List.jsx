@@ -28,8 +28,13 @@ export default connect(
 
         componentWillMount() {
             const {searchQuery, updateSearchQuery, location} = this.props;
-            this.search(searchQuery);
-            updateSearchQuery((new URLSearchParams(location.search)).get('query') || '');
+            const urlQuery = (new URLSearchParams(location.search)).get('query');
+            if (urlQuery) {
+                updateSearchQuery(urlQuery);
+            } else {
+                this.search(searchQuery);
+            }
+
         }
 
         componentWillReceiveProps(np) {
