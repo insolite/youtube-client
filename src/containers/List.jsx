@@ -8,7 +8,9 @@ import {gapiRequest} from '../actions';
 
 export default connect(
     state => {
-        return {};
+        return {
+            searchQuery: state.searchQuery,
+        };
     },
     dispatch => {
         return {
@@ -24,16 +26,14 @@ export default connect(
         };
 
         componentWillMount() {
-            this.search(this.parseQuery(this.props.location));
+            this.search(this.props.searchQuery);
         }
 
         componentWillReceiveProps(np) {
-            if (np.location.search !== this.props.location.search) {
-                this.search(this.parseQuery(np.location));
+            if (np.searchQuery !== this.props.searchQuery) {
+                this.search(np.searchQuery);
             }
         }
-
-        parseQuery = location => (new URLSearchParams(location.search)).get('query') || '';
 
         search = (query, append=false) => {
             this.setState({loading: true}, () => {
@@ -85,7 +85,7 @@ export default connect(
                         <div className="loading">Loading...</div>
                     ) : (
                         <button className="load"
-                                onClick={() => !this.state.loading && this.search(this.parseQuery(this.props.location), true)}
+                                onClick={() => !this.state.loading && this.search(this.props.searchQuery, true)}
                         >Load more</button>
                     )}
                 </List>

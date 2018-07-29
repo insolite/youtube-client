@@ -11,7 +11,7 @@ function Deferred() {
 
 const loadDeferred = new Deferred();
 
-window.onload = () => loadDeferred.resolve(); // TODO: get rid of this gapi stuff
+window.addEventListener('load', () => loadDeferred.resolve()); // TODO: get rid of this gapi stuff
 
 export const isGapiAction = (action) => {
     return Boolean(action) && Object.values(ACTIONS).indexOf(action.type) >= 0;
