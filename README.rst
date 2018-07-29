@@ -17,18 +17,12 @@ Setup development environment
 
         npm i
 
-#. Create Google API key if you don't have one yet (more info on `developers.google.com <https://developers.google.com/youtube/v3/getting-started>`_)
+#. (optional) Create Google API and OAuth2 keys if you don't have one yet (more info on `developers.google.com <https://developers.google.com/youtube/v3/getting-started>`_). Set up environment variables using given keys. Skip this step if you want to use default preinstalled ones.
 
-#. Set up environment variables using given API key and start webpack dev server
+#.  Start webpack dev server
 
     .. code-block:: bash
 
-        GAPI_KEY="your-gapi-key" \
         npm start
-
-
-   - ``GAPI_KEY`` is set by default but you should use your own for long-term purposes
-   - ``LISTEN_HOST`` is ``localhost`` by default
-   - ``LISTEN_PORT`` is ``8085`` by default
 
 #. Open http://localhost:8085/ in browser (for default ``LISTEN_HOST`` and ``LISTEN_PORT``)

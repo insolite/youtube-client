@@ -17,7 +17,7 @@ export const isGapiAction = (action) => {
     return Boolean(action) && Object.values(ACTIONS).indexOf(action.type) >= 0;
 };
 
-export const createGapiMiddleware = (GAPI_KEY) => {
+export const createGapiMiddleware = (GAPI_KEY, OAUTH_CLIENT_ID) => {
     return (store) => {
         const initDeferred = new Deferred();
         const authDeferred = new Deferred();
@@ -41,7 +41,7 @@ export const createGapiMiddleware = (GAPI_KEY) => {
                             gapi.client.init({
                                 apiKey: GAPI_KEY,
                                 discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest"],
-                                clientId: '364337261475-j9p4ej5pssan9p3khmn61t6c1niqmfl9.apps.googleusercontent.com',
+                                clientId: OAUTH_CLIENT_ID,
                                 scope: 'https://www.googleapis.com/auth/youtube',
                             }).then(function () {
                                 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);

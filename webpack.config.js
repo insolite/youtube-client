@@ -15,7 +15,8 @@ const
     LISTEN_HOST = env.LISTEN_HOST || 'localhost',
     LISTEN_PORT = env.LISTEN_PORT || 8085,
     URL_PREFIX = env.URL_PREFIX || '',
-    GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc';
+    GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc',
+    OAUTH_CLIENT_ID = env.OAUTH_CLIENT_ID || '364337261475-j9p4ej5pssan9p3khmn61t6c1niqmfl9.apps.googleusercontent.com';
 
 const extractTextPlugin = new ExtractTextPlugin({
     filename: 'resources/style.css',
@@ -144,6 +145,7 @@ module.exports = {
         new webpack.DefinePlugin({
             __GAPI_KEY: JSON.stringify(GAPI_KEY),
             __URL_PREFIX: JSON.stringify(URL_PREFIX),
+            __OAUTH_CLIENT_ID: JSON.stringify(OAUTH_CLIENT_ID),
         })
     ],
     resolve: {
