@@ -28,7 +28,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "NODE_ENV=production webpack"
+    "build": "TARGET=production webpack",
+    "github-pages": "TARGET=production PREFIX=/youtube-client/dist webpack"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

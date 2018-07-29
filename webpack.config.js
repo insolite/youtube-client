@@ -11,10 +11,10 @@ if (!global.Promise) {
 
 const env = process.env;
 const
-    NODE_ENV = env.NODE_ENV || 'development',
-    PRODUCTION = NODE_ENV === 'production',
+    PRODUCTION = env.TARGET === 'production',
     LISTEN_HOST = env.LISTEN_HOST || 'localhost',
     LISTEN_PORT = env.LISTEN_PORT || 8085,
+    PREFIX = env.PREFIX || '',
     GAPI_KEY = env.GAPI_KEY || 'AIzaSyBV_ijiRscpDdLmKn7RcPKrYiCixntbQtc';
 
 const extractTextPlugin = new ExtractTextPlugin({
@@ -28,7 +28,7 @@ module.exports = {
         './src/layout/scss/index.scss'
     ],
     output: {
-        publicPath: '/',
+        publicPath: PREFIX + '/',
         path: __dirname + '/dist',
         filename: 'bundle.js'
     },
@@ -161,7 +161,7 @@ module.exports = {
             index: '/',
         },
         proxy: {
-            '/resources': { // Because seems like historyApiFallback can't rewrite static URLs
+            [PREFIX + '/resources']: { // Because seems like historyApiFallback can't rewrite static URLs
                 target: 'http://' + LISTEN_HOST + ':' + String(LISTEN_PORT),
                 pathRewrite: {'^/': '/'},
             }
